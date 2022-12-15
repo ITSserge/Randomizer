@@ -2,27 +2,59 @@
  * Конструктор объекта рандомайзера
  *
  * @constructor
+ * @param {string} typeRandomizer - Тип рандомайзера
  * @param {number} min - Минимальное число
  * @param {number} max - Максимальное число
+ * @param {bool} repeat - Повторять ли числа
+ * @param {array} arrEl - Массив элементов, которые мы рандомано возращаем
  * @return {Randomizer} -Новый объект рандомайзера
  */
-function Randomizer(min, max) {
-    this.min = min;
-    this.max = max;
-    this.dataNumber = new Set();
+function Randomizer(typeRandomizer, {min, max, arrEl, repeat = true}) {
+    switch (typeRandomizer) {
+        case 'from-to-number' :
+            FromToNumber.call(this);
+            break;
 
-    this.randomFn = function() {
-        return Math.round(Math.random() * (this.max - this.min) + this.min);
+        case 'random-el-from-array':
+            RandomElFromArray.call(this);
+            break;
     }
 
-    this.getRand = function() {
-        const randNumber = this.randomFn();
+    function FromToNumber() {
+        this.min = min;
+        this.max = max;
+        this.dataNumber = new Set();
 
-        if(this.dataNumber.has(randNumber)) return this.getRand();
+        this.getRand = function() {
+            const randNumber = this.getRandNumber(min, max)
+            return randNumber;
+        }
+    }
+    function RandomElFromArray() {
+        this.dataNumber = new Set();
+        this.getRand = function() {
+            const randIndex = this.getRandNumber(0, arrEl.length - 1);
+            return arrEl[randIndex];
+        }
+    }
 
-        this.dataNumber.add(randNumber);
+    // Official functions
+    this.getRandNumber = function(min, max) {
+        const randNumber = this.randomFn(min, max);
+
+        if(!repeat) {
+            if(this.dataNumber.has(randNumber)) return this.getRandNumber(min, max);
+            this.dataNumber.add(randNumber);
+        }
+
         return randNumber;
+    }
+    this.randomFn = function(min, max) {
+        return Math.round(Math.random() * (max - min) + min);
     }
 }
 
-
+const test = new Randomizer('from-to-number', {
+    min : 10,
+    max : 20
+})
