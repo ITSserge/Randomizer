@@ -52,6 +52,11 @@ function Randomizer(typeRandomizer, {min, max, arrEl, repeat = true}) {
     this.randomFn = function(min, max) {
         return Math.round(Math.random() * (max - min) + min);
     }
+
+    // Object to primitive
+    this.toString = function() {
+        return this.getRand();
+    }
 }
 
 const test = new Randomizer('from-to-number', {
