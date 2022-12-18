@@ -24,6 +24,7 @@ function Randomizer(typeRandomizer, {min, max, arrEl, repeat = true}) {
         this.min = min;
         this.max = max;
         this.dataNumber = new Set();
+        this._countCall = !repeat ? this.max - this.min : false;
 
         this.getRand = function() {
             const randNumber = this.getRandNumber(min, max)
@@ -43,10 +44,16 @@ function Randomizer(typeRandomizer, {min, max, arrEl, repeat = true}) {
         const randNumber = this.randomFn(min, max);
 
         if(!repeat) {
-            if(this.dataNumber.has(randNumber)) return this.getRandNumber(min, max);
-            this.dataNumber.add(randNumber);
+            if(this.dataNumber.size > this._countCall) {
+                return 'Все ,дядя, числа закончились';
+            }
+
+            if(this.dataNumber.has(randNumber)) {
+                return this.getRandNumber(min, max);
+            }
         }
 
+        this.dataNumber.add(randNumber);
         return randNumber;
     }
     this.randomFn = function(min, max) {
@@ -61,5 +68,6 @@ function Randomizer(typeRandomizer, {min, max, arrEl, repeat = true}) {
 
 const test = new Randomizer('from-to-number', {
     min : 10,
-    max : 20
+    max : 20,
+    repeat : false
 })
