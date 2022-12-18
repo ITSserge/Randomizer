@@ -1,0 +1,39 @@
+body {
+    width: 100%;
+    height: 100vh;
+}
+.wrapper {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: darkslategrey;
+}
+
+.box-choose-type {
+    width: 50%;
+    height: 50%;
+
+    display: flex;
+    gap: 10px;
+}
+.box-choose-type__btn {
+    width: 50%;
+    height: 100%;
+    background-color: #FFD07A;
+    font-size: 30px;
+    color: darkcyan;
+
+    transition: opacity .25s;
+
+    /* Reset */
+    padding: 10px;
+    margin: 0;
+    border: none;
+}
+.box-choose-type__btn:hover {
+    cursor: pointer;
+    opacity: .7;
+}
